@@ -85,21 +85,21 @@ public:
         // ??? - implement this method
         while(head != NULL)
         {
-           DLink<E> *temp = head;
+           DLink<E> *tmp = head;
            head = head->nextPtr;
-           delete temp;
+           delete tmp;
         }
     }
 
     // Empty the list
     void clear()
     {
-       // removeall();
+       
        while(head != NULL)
        {
-           DLink<E> *temp = head;
+           DLink<E> *tmp = head;
            head = head->nextPtr;
-           delete temp;
+           delete tmp;
        }
 
         curr  = tail = head = new DLink<E>;
@@ -111,33 +111,27 @@ public:
     // Set current to first element
     void moveToStart()
     {
-        curr = head -> nextPtr;
-        // ??? - implement this method
-        //
+        curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
     }
 
     // Set current element to end of list
     void moveToEnd()
     {
-        curr = tail -> prevPtr;
-        // ??? - implement this method
-        //
+        curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
     }
 
     // Advance current to the next element
     void next()
     {
-        if (curr != tail && cnt > 1) 
-            curr = curr->nextPtr;
-        // ??? - implement this method
-        //
+        if (curr != tail && cnt > 1) //check curr is not at tail since nothing is after tail
+            curr = curr->nextPtr;   //set curr to the next element
     }
 
     // Return the current element
     E & getValue() const
     {
         //assert(curr->nextPtr != NULL, "No value");
-        return curr->nextPtr->theElement;
+        return curr->nextPtr->theElement;  
         // ??? - implement this method
         //
     }
@@ -145,17 +139,28 @@ public:
     // Insert value at current position
     void insert(const E &it)
     {
-        //
-        // ??? - implement this method
-        //
+        /* this insert function works by allocating a tmp link, changing where curr and its next element are pointing
+        by making them point to tmp and tmp will also point to them. Then, set the theElement of tmp by it */
+        DLink<E> *tmp = new DLink<E>;      // create tmp link
+        assert (tmp != NULL);              //check for errors
+
+        tmp -> nextPtr = curr -> nextPtr;  // tmp's nextPtr set to point to where curr nextPtr is pointing
+        tmp -> prevPtr = curr;             // tmp's prevPtr set to point to curr
+        curr -> nextPtr = tmp;             // curr's nextPtr set to point to tmp
+        curr -> nextPtr -> prevPtr = tmp; //the prevPtr of what curr nextPtr is pointing is set to tmp
+
+        tmp -> theElement = it;     //set the element
+
+      //  curr = tmp;
+        cnt++;
     }
 
     // Append value at the end of the list
     void append(const E &it)
     {
-        //
-        // ??? - implement this method
-        DLink<E> *tmp = new DLink<E>;
+        /*this append function works by allocating a tmp link, changing where tail and last element are pointing
+        by making them point to tmp and tmp will also point to them. Then set the theElement of tmp by it*/
+        DLink<E> *tmp = new DLink<E>; // create tmp link
         assert( tmp != NULL );
 
         tmp -> nextPtr = tail;
@@ -164,14 +169,26 @@ public:
         tail -> prevPtr = tmp;
 
         tmp -> theElement = it;
+        cnt++;
     }
 
     // Remove and return the current element
     E remove()
-    {
-        //
+    {       //still need to modify
+        if (curr -> nextPtr == tail) //checking
+            return NULL;
+        E it = curr -> nextPtr -> theElement; //remember value
+        DLink<E>*tmp = curr -> nextPtr;     
+        curr -> nextPtr -> nextPtr -> prevPtr = curr;
+        curr -> nextPtr = curr -> nextPtr -> nextPtr;
+        delete tmp;
+        cnt--;
+        return it;
+        //??? - implement this method
+
+
         // ??? - implement this method
-        E it = curr->nextPtr->theElement; // Remember value
+    /*    E it = curr->nextPtr->theElement; // Remember value
         DLink<E>* ltemp = curr->nextPtr; // Remember link node
 
         if (tail == curr->nextPtr) // Reset tail
@@ -182,7 +199,7 @@ public:
         curr->nextPtr = curr->nextPtr->nextPtr; // Remove from list
         delete ltemp; // Reclaim space
         cnt--; // Decrement the count
-        return it;
+        return it;  */
     }
 
     // Advance current to the previous element
@@ -210,14 +227,14 @@ public:
     // Set current to the element at the given position
     void moveToPos(int pos)
     {
-    /*  assert ((pos>=0)&&(pos<=cnt), "Position out of range");
+    /*  assert ((pos>=0)&&(pos<=cnt), "Position out of range");*/ 
         curr = head;
         for(int i=0; i<pos; i++) 
         {
             curr = curr->nextPtr;
         }
         // ??? - implement this method
-    */    //
+       //
     }
 };
 
