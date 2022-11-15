@@ -48,9 +48,7 @@ public:
     // The constructor with initial list size
     DList(int size)
     {
-        //this();
-        curr  = tail = head = new DLink<E>;
-        cnt = 0;
+        this();
     }
 
     // The default constructor
@@ -59,12 +57,15 @@ public:
         // ??? - implement this method
         head = new DLink<E>; 
         tail = new DLink<E>;
+        assert(head != NULL);
+        assert(tail!= NULL);
+
         curr = head;
         cnt = 0;
 
         head->nextPtr = tail;
         head->prevPtr = nullptr;
-        tail->nextPtr = head;
+        tail->prevPtr = head;
         tail->nextPtr = nullptr;
     }
 
@@ -83,27 +84,33 @@ public:
     ~DList()
     {
         // ??? - implement this method
-        while(head != NULL)
+        curr = head;
+        clear();        //delete all elements
+        curr = tail;
+        delete head;
+        delete curr;
+
+    /*    while(head != NULL)
         {
            DLink<E> *tmp = head;
            head = head->nextPtr;
            delete tmp;
-        }
+        }*/
     }
 
     // Empty the list
     void clear()
     {
        
-       while(head != NULL)
+       while(head->nextPtr != NULL && head->nextPtr != tail)
        {
-           DLink<E> *tmp = head;
-           head = head->nextPtr;
+           DLink<E> *tmp = head->nextPtr;
+           head->nextPtr = head->nextPtr->nextPtr;
            delete tmp;
        }
-
-        curr  = tail = head = new DLink<E>;
         cnt = 0;
+       // curr  = tail = head = new DLink<E>;
+
         // ??? - implement this method
         //
     }
@@ -123,15 +130,17 @@ public:
     // Advance current to the next element
     void next()
     {
-        if (curr != tail && cnt > 1) //check curr is not at tail since nothing is after tail
+        if (curr != tail) //check curr is not at tail since nothing is after tail
             curr = curr->nextPtr;   //set curr to the next element
     }
 
     // Return the current element
     E & getValue() const
     {
+        //assert(curr->nextPtr != NULL);
         //assert(curr->nextPtr != NULL, "No value");
-        return curr->nextPtr->theElement;  
+        //return curr->nextPtr->theElement; 
+        return curr->theElement;  
         // ??? - implement this method
         //
     }
@@ -159,14 +168,15 @@ public:
     void append(const E &it)
     {
         /*this append function works by allocating a tmp link, changing where tail and last element are pointing
-        by making them point to tmp and tmp will also point to them. Then set the theElement of tmp by it*/
+        by making them point to tmp and tmp will also point to them. Then set the theElement of tmp by it and add count*/
         DLink<E> *tmp = new DLink<E>; // create tmp link
-        assert( tmp != NULL );
+        assert( tmp != NULL );        // check for errors
 
-        tmp -> nextPtr = tail;
-        tmp -> prevPtr = tail -> prevPtr;
-        tail -> prevPtr -> nextPtr = tmp;
-        tail -> prevPtr = tmp;
+
+        tmp -> nextPtr = tail;      // tmp's next pointer set to tail
+        tmp -> prevPtr = tail -> prevPtr;  //tmp's prev pointer set to what tail's prevPtr is pointing
+        tail -> prevPtr -> nextPtr = tmp;  //the nextPtr of what tail's prevPtr is pointing is set to temp
+        tail -> prevPtr = tmp;      //tail's prevPtr is set to tmp
 
         tmp -> theElement = it;
         cnt++;
@@ -174,38 +184,25 @@ public:
 
     // Remove and return the current element
     E remove()
-    {       //still need to modify
-        if (curr -> nextPtr == tail) //checking
+    {   /*this remove function works by checking curr's nextPtr is not at tail since tail cannot be remove(only elements).
+        The element of the link to be remove is accessed for returning element. .... */
+        if (curr->nextPtr == tail) //checking 
             return NULL;
         E it = curr -> nextPtr -> theElement; //remember value
         DLink<E>*tmp = curr -> nextPtr;     
         curr -> nextPtr -> nextPtr -> prevPtr = curr;
         curr -> nextPtr = curr -> nextPtr -> nextPtr;
+
+
         delete tmp;
         cnt--;
         return it;
-        //??? - implement this method
-
-
-        // ??? - implement this method
-    /*    E it = curr->nextPtr->theElement; // Remember value
-        DLink<E>* ltemp = curr->nextPtr; // Remember link node
-
-        if (tail == curr->nextPtr) // Reset tail
-        {
-            tail = curr;
-        } 
-
-        curr->nextPtr = curr->nextPtr->nextPtr; // Remove from list
-        delete ltemp; // Reclaim space
-        cnt--; // Decrement the count
-        return it;  */
     }
 
     // Advance current to the previous element
     void prev()
     {
-        if (curr != head && cnt > 1)         //checking 
+        if (curr != head && cnt > 0)         //checking [[[0 or 1?]]]
             curr = curr->prevPtr;
         // ??? - implement this method
         //
@@ -217,7 +214,7 @@ public:
        // DLink<E>* temp = head; //still need to fix since this is only used when head has a value
         DLink<E>* temp = head->nextPtr;
         int i;
-        for (i=0; curr != temp; i++)
+        for (i=0; curr != temp; i++)   // [[[0 or 1?]]]
         {
             temp = temp->nextPtr;
         }
@@ -227,14 +224,31 @@ public:
     // Set current to the element at the given position
     void moveToPos(int pos)
     {
-    /*  assert ((pos>=0)&&(pos<=cnt), "Position out of range");*/ 
-        curr = head;
-        for(int i=0; i<pos; i++) 
+        //assert ((pos>=0)&&(pos<=cnt), "Position out of range");
+    /*   curr = head;
+        for(int i=0; i<pos; i++) //<=
         {
             curr = curr->nextPtr;
         }
         // ??? - implement this method
+        if ( cnt/2 <= pos)  
+            curr = head;
+            for(int i=0; i<pos; i++) //<=
+            {
+                 curr = curr->nextPtr;
+            }
+        else 
+            curr = tail;
+            for (int i=0; i<pos; i++)
+            {
+                curr = curr->nextPtr;
+            } */
        //
+            curr = head -> nextPtr;
+            for(int i=0; i<pos; i++) //<=
+            {
+                 curr = curr->nextPtr;
+            }
     }
 };
 
