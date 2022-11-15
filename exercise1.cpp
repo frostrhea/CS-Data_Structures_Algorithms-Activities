@@ -247,7 +247,7 @@ public:
             curr = head -> nextPtr;
             for(int i=0; i<pos; i++) //<=
             {
-                 curr = curr->nextPtr;
+                 curr = curr->nextPtr; // segmentation fault here
             }
     }
 };
