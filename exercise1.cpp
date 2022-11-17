@@ -75,7 +75,9 @@ public:
         head = source.head;
         tail = source.tail;
         curr = source.curr;
-
+        cnt = source.cnt;
+        
+    ///need
     }
 
     // The class destructor
@@ -111,7 +113,7 @@ public:
         tail->prevPtr = head;
 
        // curr  = tail = head = new DLink<E>;
-        //call dlist()?
+        // dlist()??
         // ??? - implement this method
         //
     }
@@ -119,15 +121,15 @@ public:
     // Set current to first element
     void moveToStart()
     {
-       // curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
-        curr = head -> nextPtr;
+        curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
+        //curr = head -> nextPtr;
     }
 
     // Set current element to end of list
     void moveToEnd()
     {
-        //curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
-        curr = tail;
+        curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
+        //curr = tail;
     }
 
     // Advance current to the next element
@@ -288,31 +290,31 @@ int main(void)
     theList.clear();   // no list
     for (i = 0; i < 10; ++i)
     {
-        theList.append(i + 100); //
+        theList.append(i + 100); //100 101 102 103 104 105 106 107 108 109
     }
 
     // display the contents of the list
     theList.moveToStart();
     for (i = 0; i < theList.length(); ++i)
     {
-        cout << theList.getValue() << " ";
+        cout << theList.getValue() << " "; //100 101 102 103 104 105 106 107 108 109
 
         theList.next();
     }
     cout << "\n";
 
     // remove two elements at the specified position
-    theList.moveToPos(5);
+    theList.moveToPos(5); // 105
     cout << theList.currPos() << "\n";
 
-    theList.remove();
-    theList.remove();
+    theList.remove();   //remove 106
+    theList.remove();   //remove 107
 
     // display the contents of the list
     theList.moveToStart();
     for (i = 0; i < theList.length(); ++i)
     {
-        cout << theList.getValue() << " ";
+        cout << theList.getValue() << " "; //100 101 102 103 104 105 108 109
 
         theList.next();
     }
