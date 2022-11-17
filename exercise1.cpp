@@ -54,11 +54,10 @@ public:
     // The default constructor
     DList()
     {
-        // ??? - implement this method
         head = new DLink<E>; 
         tail = new DLink<E>;
         assert(head != NULL);
-        assert(tail!= NULL);
+        assert(tail != NULL);
 
         curr = head;
         cnt = 0;
@@ -72,7 +71,6 @@ public:
     // The copy constructor
     DList(const DList &source)
     {
-        //
         // ??? - implement this method
         head = source.head;
         tail = source.tail;
@@ -84,12 +82,10 @@ public:
     ~DList()
     {
         // ??? - implement this method
-        curr = head;
         clear();        //delete all elements
-        curr = tail;
         delete head;
-        delete curr;
-
+        delete tail;
+        //delete curr;
     /*    while(head != NULL)
         {
            DLink<E> *tmp = head;
@@ -102,15 +98,20 @@ public:
     void clear()
     {
        
-       while(head->nextPtr != NULL && head->nextPtr != tail)
-       {
+      // while(head->nextPtr != NULL && head->nextPtr != tail)
+        while(head->nextPtr != tail)
+         {
            DLink<E> *tmp = head->nextPtr;
            head->nextPtr = head->nextPtr->nextPtr;
            delete tmp;
-       }
+        }
         cnt = 0;
-       // curr  = tail = head = new DLink<E>;
+        curr = head;
+        head->nextPtr = tail;
+        tail->prevPtr = head;
 
+       // curr  = tail = head = new DLink<E>;
+        //call dlist()?
         // ??? - implement this method
         //
     }
@@ -118,31 +119,35 @@ public:
     // Set current to first element
     void moveToStart()
     {
-        curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
+       // curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
+        curr = head -> nextPtr;
     }
 
     // Set current element to end of list
     void moveToEnd()
     {
-        curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
+        //curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
+        curr = tail;
     }
 
     // Advance current to the next element
     void next()
-    {
-        if (curr != tail) //check curr is not at tail since nothing is after tail
+    {                   ///need to recheck here
+        //if (curr != tail->prevPtr) //check curr is not at tail since nothing is after tail
+        if (curr != tail)
             curr = curr->nextPtr;   //set curr to the next element
     }
 
     // Return the current element
     E & getValue() const
     {
-        //assert(curr->nextPtr != NULL);
-        //assert(curr->nextPtr != NULL, "No value");
-        //return curr->nextPtr->theElement; 
-        return curr->theElement;  
-        // ??? - implement this method
-        //
+        assert( curr != NULL);
+        
+        //if (curr->nextPtr != tail) 
+        if (curr != tail && curr != head) 
+            return curr->theElement;  
+        //return curr->nextPtr->theElement;
+        // ??? - implement this m
     }
 
     // Insert value at current position
@@ -159,8 +164,7 @@ public:
         curr -> nextPtr -> prevPtr = tmp; //the prevPtr of what curr nextPtr is pointing is set to tmp
 
         tmp -> theElement = it;     //set the element
-
-      //  curr = tmp;
+        //curr = tmp;//
         cnt++;
     }
 
@@ -178,7 +182,8 @@ public:
         tail -> prevPtr -> nextPtr = tmp;  //the nextPtr of what tail's prevPtr is pointing is set to temp
         tail -> prevPtr = tmp;      //tail's prevPtr is set to tmp
 
-        tmp -> theElement = it;
+        tmp -> theElement = it;\
+        //curr = tmp;
         cnt++;
     }
 
@@ -193,7 +198,6 @@ public:
         curr -> nextPtr -> nextPtr -> prevPtr = curr;
         curr -> nextPtr = curr -> nextPtr -> nextPtr;
 
-
         delete tmp;
         cnt--;
         return it;
@@ -202,21 +206,27 @@ public:
     // Advance current to the previous element
     void prev()
     {
-        if (curr != head && cnt > 0)         //checking [[[0 or 1?]]]
+        //if (curr != head)         //curr will not go to head
             curr = curr->prevPtr;
-        // ??? - implement this method
-        //
     }
 
     // Return position of the current element
     int currPos() const
     {
        // DLink<E>* temp = head; //still need to fix since this is only used when head has a value
-        DLink<E>* temp = head->nextPtr;
+    /*   DLink<E>* temp = head->nextPtr;
         int i;
-        for (i=0; curr != temp; i++)   // [[[0 or 1?]]]
+        for (i=0; curr != temp; i++)   
         {
             temp = temp->nextPtr;
+        }
+        return i;  */ 
+
+        DLink<E>* temp = curr;
+        int i;
+        for (i=0; temp != head -> nextPtr; i++)
+        {
+            temp = temp->prevPtr;
         }
         return i;
     }
@@ -225,25 +235,6 @@ public:
     void moveToPos(int pos)
     {
         //assert ((pos>=0)&&(pos<=cnt), "Position out of range");
-    /*   curr = head;
-        for(int i=0; i<pos; i++) //<=
-        {
-            curr = curr->nextPtr;
-        }
-        // ??? - implement this method
-        if ( cnt/2 <= pos)  
-            curr = head;
-            for(int i=0; i<pos; i++) //<=
-            {
-                 curr = curr->nextPtr;
-            }
-        else 
-            curr = tail;
-            for (int i=0; i<pos; i++)
-            {
-                curr = curr->nextPtr;
-            } */
-       //
             curr = head -> nextPtr;
             for(int i=0; i<pos; i++) //<=
             {
@@ -264,40 +255,40 @@ int main(void)
     // populate the list
     for (i = 0; i < 10; ++i)
     {
-        theList.append(i);
+        theList.append(i); //0 1 2 3 4 5 6 7 8 9
     }
     while (i < 20)
     {
-        theList.insert(i);
+        theList.insert(i); //19 18 17 16 15 14 13 12 11 10
 
         ++i;
     }
 
     // display the contents of the list
     theList.moveToStart();
-    for (i = 0; i < theList.length(); ++i)
+    for (i = 0; i < theList.length(); ++i) //cnt = 20
     {
         cout << theList.getValue() << " ";
 
-        theList.next();
+        theList.next();  //18 17 16 15 14 13 12 11 10 0 1 2 3 4 5 6 7 8 9
     }
     cout << "\n";
 
     // display the contents of the list in reverse order
     theList.moveToEnd();
-    for (i = 0; i < theList.length(); ++i)
+    for (i = 0; i < theList.length(); ++i) //cnt = 20
     {
-        theList.prev();
+        theList.prev(); 
 
         cout << theList.getValue() << " ";
-    }
+    }                   //9?  8 7 6 5 4 3 2 1 0 10 11 12 13 14 15 16 17 18
     cout << "\n";
 
     // replace the contents of the list
-    theList.clear();
+    theList.clear();   // no list
     for (i = 0; i < 10; ++i)
     {
-        theList.append(i + 100);
+        theList.append(i + 100); //
     }
 
     // display the contents of the list
