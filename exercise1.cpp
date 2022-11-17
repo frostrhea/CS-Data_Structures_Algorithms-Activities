@@ -278,7 +278,7 @@ int main(void)
     theList.moveToEnd();
     for (i = 0; i < theList.length(); ++i) //cnt = 20
     {
-        theList.prev(); 
+       // theList.prev(); ??? if such, then it would start at 8 instead of 9
 
         cout << theList.getValue() << " ";
     }                   //9?  8 7 6 5 4 3 2 1 0 10 11 12 13 14 15 16 17 18
