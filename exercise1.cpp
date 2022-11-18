@@ -145,8 +145,7 @@ public:
     // Set current to first element
     void moveToStart()
     {                   // comment remove?
-        curr = head;   
-        //curr = head -> nextPtr;  //move curr to what head is pointing which is the first element
+        curr = head;   //move curr to head
     }
 
     // Set current element to end of list
@@ -171,8 +170,6 @@ public:
         //if (curr->nextPtr != tail) 
         //if (curr != tail && curr != head) 
             return curr->nextPtr->theElement;  
-        //return curr->theElement;
-        // ??? - implement this m
     }
 
     // Insert value at current position
@@ -238,7 +235,6 @@ public:
     // Return position of the current element
     int currPos() const
     {
-       // DLink<E>* temp = head; //still need to fix since this is only used when head has a value
     /*   DLink<E>* temp = head->nextPtr;
         int i;
         for (i=0; curr != temp; i++)   
