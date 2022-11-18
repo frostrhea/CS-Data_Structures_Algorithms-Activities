@@ -71,14 +71,36 @@ public:
     // The copy constructor
     DList(const DList &source)
     {
+        cout << "Copy constructor" << endl;
         // ??? - implement this method
-        head = source.head;
-        tail = source.tail;
-        curr = source.curr;
+        source.head = new DLink<E>;
+        source.tail = new DLink<E>;
+        source.curr = new DLink<E>;
         cnt = source.cnt;
-        
-    ///need
+
+        head = new DLink<E>; 
+        tail = new DLink<E>;
+        assert(head != NULL);
+        assert(tail != NULL);
+
+        curr = head;
+        cnt = 0;
+
+        head->nextPtr = tail;
+        head->prevPtr = nullptr;
+        tail->prevPtr = head;
+        tail->nextPtr = nullptr;
+        DLink<E> *temp = source.head;
+
+        while (temp->nextPtr != source.tail)
+        {
+            append(temp->nextPtr->theElement);
+            temp = temp->nextPtr;
+            if (temp == source.curr)
+                curr = temp;
+        }
     }
+    ///need
 
     // The class destructor
     ~DList()
@@ -88,27 +110,29 @@ public:
         delete head;
         delete tail;
         //delete curr;
-    /*    while(head != NULL)
-        {
-           DLink<E> *tmp = head;
-           head = head->nextPtr;
-           delete tmp;
-        }*/
     }
 
     // Empty the list
     void clear()
     {
-       
+        curr = head;
       // while(head->nextPtr != NULL && head->nextPtr != tail)
-        while(head->nextPtr != tail)
+        moveToStart();
+        while (curr->nextPtr != tail)
+        {
+            remove();
+        }
+        
+      /*  while(head->nextPtr != tail) //need to modify HERE
          {
            DLink<E> *tmp = head->nextPtr;
            head->nextPtr = head->nextPtr->nextPtr;
+           head->nextPtr->nextPtr->prevPtr = head; //check here
            delete tmp;
-        }
+        }*/
         cnt = 0;
-        curr = head;
+        
+        //curr = head-> nextPtr;
         head->nextPtr = tail;
         tail->prevPtr = head;
 
@@ -120,16 +144,16 @@ public:
 
     // Set current to first element
     void moveToStart()
-    {
-        curr = head -> nextPtr;   //move curr to what head is pointing which is the first element
-        //curr = head -> nextPtr;
+    {                   // comment remove?
+        curr = head;   
+        //curr = head -> nextPtr;  //move curr to what head is pointing which is the first element
     }
 
     // Set current element to end of list
-    void moveToEnd()
+    void moveToEnd() 
     {
-        curr = tail -> prevPtr;  //move curr to what tail is pointing which is the last element
-        //curr = tail;
+        //curr = tail;  //move curr to tail, no curr link here
+        curr = tail->prevPtr; 
     }
 
     // Advance current to the next element
@@ -143,12 +167,11 @@ public:
     // Return the current element
     E & getValue() const
     {
-        assert( curr != NULL);
-        
+        assert( curr->nextPtr != NULL);
         //if (curr->nextPtr != tail) 
-        if (curr != tail && curr != head) 
-            return curr->theElement;  
-        //return curr->nextPtr->theElement;
+        //if (curr != tail && curr != head) 
+            return curr->nextPtr->theElement;  
+        //return curr->theElement;
         // ??? - implement this m
     }
 
@@ -162,8 +185,8 @@ public:
 
         tmp -> nextPtr = curr -> nextPtr;  // tmp's nextPtr set to point to where curr nextPtr is pointing
         tmp -> prevPtr = curr;             // tmp's prevPtr set to point to curr
-        curr -> nextPtr = tmp;             // curr's nextPtr set to point to tmp
         curr -> nextPtr -> prevPtr = tmp; //the prevPtr of what curr nextPtr is pointing is set to tmp
+        curr -> nextPtr = tmp;             // curr's nextPtr set to point to tmp
 
         tmp -> theElement = it;     //set the element
         //curr = tmp;//
@@ -208,7 +231,7 @@ public:
     // Advance current to the previous element
     void prev()
     {
-        //if (curr != head)         //curr will not go to head
+        if (curr != head->prevPtr)         //curr will not go to head
             curr = curr->prevPtr;
     }
 
@@ -266,13 +289,17 @@ int main(void)
         ++i;
     }
 
+    //theList.moveToPos(10);
+    //cout<<"pos10";
+    //cout << theList.getValue() << " ";
+
     // display the contents of the list
     theList.moveToStart();
     for (i = 0; i < theList.length(); ++i) //cnt = 20
     {
         cout << theList.getValue() << " ";
 
-        theList.next();  //18 17 16 15 14 13 12 11 10 0 1 2 3 4 5 6 7 8 9
+        theList.next();  //19 18 17 16 15 14 13 12 11 10 0 1 2 3 4 5 6 7 8 9
     }
     cout << "\n";
 
@@ -280,10 +307,10 @@ int main(void)
     theList.moveToEnd();
     for (i = 0; i < theList.length(); ++i) //cnt = 20
     {
-       // theList.prev(); ??? if such, then it would start at 8 instead of 9
+        theList.prev(); //from tail to last element
 
         cout << theList.getValue() << " ";
-    }                   //9?  8 7 6 5 4 3 2 1 0 10 11 12 13 14 15 16 17 18
+    }                   //9 8 7 6 5 4 3 2 1 0 10 11 12 13 14 15 16 17 18
     cout << "\n";
 
     // replace the contents of the list
