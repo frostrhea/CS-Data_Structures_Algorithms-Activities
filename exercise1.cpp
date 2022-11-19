@@ -51,7 +51,7 @@ public:
         this();
     }
 
-    // The default constructor
+    // The default constructorr
     DList()
     {
         head = new DLink<E>; 
