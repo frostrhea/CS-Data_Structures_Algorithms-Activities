@@ -89,7 +89,7 @@ public:
         tail->nextPtr = nullptr;
 
         DLink<E> *tmp = source.head;   //tmp at current/source list
-        while (tmp->nextPtr != source.tail) //copy elements from first to last element
+        while (tmp->nextPtr != source.tail) //copy elements from first to last element of the source list
         {
             append(tmp->nextPtr->theElement);
             tmp = tmp->nextPtr;
