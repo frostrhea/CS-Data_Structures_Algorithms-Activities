@@ -297,7 +297,7 @@ assertions as necessary to ensure the correct operation of this program.
 All memory allocations should be checked with assertions and all
 discarded memory must be properly deallocated.
 */
-
+/*
 // implementation of method that tests if value is in the collection
 template <class T> int BSTree<T>::includes(T &val) const
 {
@@ -310,7 +310,7 @@ template <class T> void BSTree<T>::insert(T &val)
 
 // implementation of method that removes a value from the tree
 template <class T> T BSTree<T>::remove(T &val)
-
+*/
 
 // implementation of the inorder traversal function
 template <class T> void inorder(BinNode<T>* root)
@@ -357,7 +357,7 @@ template <class T> void levelorder(BinNode<T> *root)
         if (current->right != NULL) Q.push(current->right);
         Q.pop(); //remove front element --
     }
-
+}
 
 
 /*
