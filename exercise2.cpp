@@ -314,7 +314,14 @@ template <class T> T BSTree<T>::remove(T &val)
 
 // implementation of the inorder traversal function
 template <class T> void inorder(BinNode<T>* root)
+{
+    if (root == NULL)
+        return;
 
+    inorder(root->left);
+    visit(root);    
+    inorder(root->right);
+}
 
 // implementation of the postorder traversal function
 template <class T> void postorder(BinNode<T>* root)
@@ -322,11 +329,34 @@ template <class T> void postorder(BinNode<T>* root)
     if (root == NULL)
         return;
 
+    postorder(root->left);
+    postorder(root->right);
+
+    visit(root);
+    /*visit(root->left);
+    postorder(left->right);
+    postorder(right->root);
+    */
 }
 
 // implementation of the levelorder traversal function
 template <class T> void levelorder(BinNode<T> *root)
+{
+    if (root == NULL)
+    return;
 
+    queue<BinNode*> Q;
+    Q.push(root);
+
+    //while there is at least one discovered node
+    while(!Q.empty())
+    {
+        BinNode* current = Q.front();
+        cout<<current->element()<<" ";
+        if (current->left != NULL) Q.push(current->left);
+        if (current->right != NULL) Q.push(current->right);
+        Q.pop(); //remove front element --
+    }
 
 
 
