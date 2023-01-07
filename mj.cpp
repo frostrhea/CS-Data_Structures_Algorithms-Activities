@@ -1,5 +1,3 @@
-//Rhea Salve Guingao 2021-2362
-
 /*
 CCC121 Laboratory Exercise No. 2
 Due: December 18, 2022 (Sunday) at 11:55PM
@@ -15,7 +13,8 @@ using namespace std;
 The structure to be used for representing a binary tree node. This struct
 declaration should not be modified in any way.
 */
-template <class T> struct BinNode
+template <class T>
+struct BinNode
 {
     T element;
     BinNode<T> *left;
@@ -23,16 +22,16 @@ template <class T> struct BinNode
 };
 
 // helper functions for allocating binary tree nodes
-template <class T> BinNode<T> *makeBinNode(T &element, BinNode<T> *left,
-        BinNode<T> *right)
+template <class T>
+BinNode<T> *makeBinNode(T &element, BinNode<T> *left, BinNode<T> *right)
 {
     // allocate a node given the values of the element, left, and right
     // fields
     BinNode<T> *result;
 
     result = new BinNode<T>; // throwing allocation
-    assert(result != NULL);	// for backwards compatibility with
-    //pre-standard compilers
+    assert(result != NULL);  // for backwards compatibility with
+    // pre-standard compilers
 
     // set the field values
     result->element = element;
@@ -42,7 +41,8 @@ template <class T> BinNode<T> *makeBinNode(T &element, BinNode<T> *left,
     return result;
 }
 
-template <class T> BinNode<T> *makeBinNode(T &element)
+template <class T>
+BinNode<T> *makeBinNode(T &element)
 {
     // allocate a node given only the value of the element field
     return makeBinNode(element, (BinNode<T> *)NULL, (BinNode<T> *)NULL);
@@ -51,24 +51,29 @@ template <class T> BinNode<T> *makeBinNode(T &element)
 // function prototypes for the binary tree traversals
 // already implemented
 // preorder traversal
-template <class T> void preorder(BinNode<T>* root);
+template <class T>
+void preorder(BinNode<T> *root);
 
 // to be implemented
-// inorder traversal   ----------------------------------------------------------------
-template <class T> void inorder(BinNode<T>* root);
+// inorder traversal
+template <class T>
+void inorder(BinNode<T> *root);
 
-// postorder traversal ----------------------------------------------------------------
-template <class T> void postorder(BinNode<T>* root);
+// postorder traversal
+template <class T>
+void postorder(BinNode<T> *root);
 
-// levelorder traversal ---------------------------------------------------------------
-template <class T> void levelorder(BinNode<T> *root);
+// levelorder traversal
+template <class T>
+void levelorder(BinNode<T> *root);
 
 //
 // class BSTree
 //   collection using binary search tree designed for fast insertion,
 //   test and removal operations
 //
-template <class T> class BSTree
+template <class T>
+class BSTree
 {
 public:
     // default constructor
@@ -100,6 +105,7 @@ public:
 
     // display the values using different traversal methods
     void displayTraversals() const;
+
 protected:
     // pointer to the root node
     BinNode<T> *root;
@@ -118,7 +124,8 @@ protected:
 };
 
 // default constructor implementation
-template <class T> BSTree<T>::BSTree()
+template <class T>
+BSTree<T>::BSTree()
 {
     // initialize empty tree
     root = NULL;
@@ -126,7 +133,8 @@ template <class T> BSTree<T>::BSTree()
 }
 
 // copy constructor implementation
-template <class T> BSTree<T>::BSTree(const BSTree<T> &v)
+template <class T>
+BSTree<T>::BSTree(const BSTree<T> &v)
 {
     // initialize tree by adding all the elements from argument
     root = copy(v.root);
@@ -134,14 +142,16 @@ template <class T> BSTree<T>::BSTree(const BSTree<T> &v)
 }
 
 // destructor implementation
-template <class T> BSTree<T>::~BSTree()
+template <class T>
+BSTree<T>::~BSTree()
 {
     // deallocate tree
     clear();
 }
 
 // implementation of method that removes all values from the collection
-template <class T> void BSTree<T>::clear()
+template <class T>
+void BSTree<T>::clear()
 {
     release(root);
 
@@ -151,14 +161,15 @@ template <class T> void BSTree<T>::clear()
 
 // implementation of method that removes and returns the value of the
 // root node
-template <class T> T BSTree<T>::removeAny()
+template <class T>
+T BSTree<T>::removeAny()
 {
     T element;
 
     // root cannot be null
     assert(root != NULL);
 
-    BinNode<T> * newroot = removeTop(root);
+    BinNode<T> *newroot = removeTop(root);
 
     // save the value of the root node
     element = root->element;
@@ -172,14 +183,16 @@ template <class T> T BSTree<T>::removeAny()
 }
 
 // implementation of method that returns the count of values
-template <class T> int BSTree<T>::size() const
+template <class T>
+int BSTree<T>::size() const
 {
     return nodecount;
 }
 
 // implementation of method that displays the values using different
 // traversal methods
-template <class T> void BSTree<T>::displayTraversals() const
+template <class T>
+void BSTree<T>::displayTraversals() const
 {
     cout << "Preorder traversal: ";
     preorder(root);
@@ -199,7 +212,8 @@ template <class T> void BSTree<T>::displayTraversals() const
 }
 
 // implementation of the method used internally to delete top node
-template <class T> BinNode<T> *BSTree<T>::removeTop(BinNode<T> *topNode)
+template <class T>
+BinNode<T> *BSTree<T>::removeTop(BinNode<T> *topNode)
 {
     // remove top most node from a binary search tree
     BinNode<T> *left = topNode->left;
@@ -241,7 +255,8 @@ template <class T> BinNode<T> *BSTree<T>::removeTop(BinNode<T> *topNode)
 
 // implementation of the method used internally to deallocate entire
 // subtree
-template <class T> void BSTree<T>::release(BinNode<T> *root)
+template <class T>
+void BSTree<T>::release(BinNode<T> *root)
 {
     if (!root)
         return;
@@ -255,7 +270,8 @@ template <class T> void BSTree<T>::release(BinNode<T> *root)
 
 // implementation of the method used internally to create a copy of the
 // entire subtree
-template <class T> BinNode<T> *BSTree<T>::copy(BinNode<T> *root)
+template <class T>
+BinNode<T> *BSTree<T>::copy(BinNode<T> *root)
 {
     if (!root)
         return NULL;
@@ -263,14 +279,14 @@ template <class T> BinNode<T> *BSTree<T>::copy(BinNode<T> *root)
     // recursively create a copy of the subtree
     BinNode<T> *newLeft = copy(root->left);
     BinNode<T> *newRight = copy(root->right);
-    BinNode<T> *newNode = makeBinNode<T>(root->element, newLeft,
-                                         newRight);
+    BinNode<T> *newNode = makeBinNode<T>(root->element, newLeft, newRight);
 
     return newNode;
 }
 
 // the visit function for the traversal methods
-template <class T> void visit(BinNode<T>* root)
+template <class T>
+void visit(BinNode<T> *root)
 {
     // visit routine for binary tree node
 
@@ -279,7 +295,8 @@ template <class T> void visit(BinNode<T>* root)
 }
 
 // implementation of the preorder traversal function
-template <class T> void preorder(BinNode<T>* root)
+template <class T>
+void preorder(BinNode<T> *root)
 {
     if (root == NULL)
         return; // Empty subtree, do nothing
@@ -291,8 +308,6 @@ template <class T> void preorder(BinNode<T>* root)
     preorder(root->right);
 }
 
-
-
 /*
 Implement the following missing methods and functions here. Use
 assertions as necessary to ensure the correct operation of this program.
@@ -301,137 +316,140 @@ discarded memory must be properly deallocated.
 */
 
 // implementation of method that tests if value is in the collection
-/* this works by checking each element in nodes and compare it to val. Returns true if it is in the 
-   collection, false if not.*/ 
-template <class T> int BSTree<T>::includes(T &val) const
+template <class T>
+int BSTree<T>::includes(T &val) const
 {
-    BinNode<T> *current = root;
+    BinNode<T> *currentNode = root;
 
-    while (current != nullptr && current->element != val)
+    while (currentNode != NULL)
     {
-
-        if (val < current-> element)    //goes to left child if val < current element
-            current = current-> left;
-        else if (val > current-> element) //goes to right child if val > current element
-            current = current-> right;
-        else if ( val == current-> element) 
-           return true;         
+        if (val == currentNode->element)
+            return 1;
+        if (val <= currentNode->element)
+            currentNode = currentNode->left;
+        else
+            currentNode = currentNode->right;
     }
-    return false;
-} 
+
+    return 0;
+}
 
 // implementation of method that inserts a value into the tree
-/* this works by comparing values to the current node until it finds a node with no children
-    then inserts it on the left side if val is lesser than the parent element, right if otherwise */
-template <class T> void BSTree<T>::insert(T &val)
+template <class T>
+void BSTree<T>::insert(T &val)
 {
-    BinNode<T> *current = root;
-    BinNode<T> *parent = nullptr;
+    BinNode<T> *parentNode = NULL;
+    BinNode<T> *currentNode = root;
 
-    while (current!= nullptr) //to find the right place to insert the val
+    while (currentNode != NULL)
     {
-        parent = current;   
-        if (val <= current -> element)   
-            current = current -> left;
-        else 
-            current = current -> right;
+        parentNode = currentNode;
+
+        if (val <= currentNode->element)
+            currentNode = currentNode->left;
+        else
+            currentNode = currentNode->right;
     }
-    
-    if (parent == nullptr)  //if root has no element then insert node  
+
+    if (parentNode == NULL)
         root = makeBinNode<T>(val);
-    else                    //if parent has an element and no children then insert the node
-        if (val <= parent -> element)    //allocate to left if val <= parent element
-            parent->left = makeBinNode<T>(val);
-        else                            //allocate to right if val > parent element
-            parent->right = makeBinNode<T>(val);
+    else if (val <= parentNode->element)
+        parentNode->left = makeBinNode<T>(val);
+    else
+        parentNode->right = makeBinNode<T>(val);
 
     nodecount++;
 }
 
 // implementation of method that removes a value from the tree
-/* this works by finding the node through comparing then remove the node using removeTop*/
-template <class T> T BSTree<T>::remove(T &val)
+template <class T>
+T BSTree<T>::remove(T &val)
 {
-    BinNode<T> *current = root;
-    BinNode<T> *parent = nullptr;
+    if (root == NULL)
+        return root->element;
 
-    if (current == nullptr)  //if no root 
-        return false;
+    BinNode<T> *parentNode = NULL;
+    BinNode<T> *currentNode = root;
 
-    while (current != nullptr && current->element != val) //to find node to be removed
+    while (currentNode != NULL)
     {
-        parent = current;
-        if (val <= current-> element)   
-            current = current-> left;
-        else if (val > current-> element) 
-            current = current-> right;
+        if (val == currentNode->element)
+            break;
+
+        parentNode = currentNode;
+
+        if (val <= currentNode->element)
+            currentNode = currentNode->left;
+        else
+            currentNode = currentNode->right;
     }
 
-    if (parent == nullptr)         
-        root = removeTop(current);
-    else if (val <= parent-> element)
-        parent -> left = removeTop(current);
+    if (parentNode == NULL)
+        root = removeTop(currentNode);
+    else if (val <= parentNode->element)
+        parentNode->left = removeTop(currentNode);
     else
-        parent -> right = removeTop(current);
+        parentNode->right = removeTop(currentNode);
 
-    delete current;
+    T element = currentNode->element;
+
+    delete currentNode;
+
     nodecount--;
 
-    return true;
-} 
-
+    return element;
+}
 
 // implementation of the inorder traversal function
-template <class T> void inorder(BinNode<T>* root)
+template <class T>
+void inorder(BinNode<T> *root)
 {
     if (root == NULL)
         return;
 
     inorder(root->left);
-    visit(root);    
+
+    visit(root);
+
     inorder(root->right);
 }
 
 // implementation of the postorder traversal function
-template <class T> void postorder(BinNode<T>* root)
+template <class T>
+void postorder(BinNode<T> *root)
 {
     if (root == NULL)
         return;
 
     postorder(root->left);
+
     postorder(root->right);
 
     visit(root);
 }
 
-
 // implementation of the levelorder traversal function
-/*   levelorder traversal function works by creating a queue that we can temporarily place
-     the elements so that its final arrangement would be by level. It prints the parent first then
-     add its children to queue, then remove the parent, then go to the next one in queue and print 
-     it then add its children to queue, so on and so forth. */
-template <class T> void levelorder(BinNode<T> *root)
+template <class T>
+void levelorder(BinNode<T> *root)
 {
-    if (root == NULL) //checking root
-    return;
+    if (root == NULL)
+        return;
 
-    queue <BinNode<T>*> Q;
-    Q.push(root); //add root to queue
+    queue<BinNode<T> *> q;
 
-    //while there is at least one discovered node
-    while(!Q.empty())
+    q.push(root);
+
+    while (!q.empty())
     {
-        BinNode<T> *current = Q.front();  //current is the current node
-        cout<< current -> element<<" "; //print front/first element in queue
-        //adding children of current to queue
-        if (current -> left != NULL) 
-            Q.push(current -> left); 
-        if (current -> right != NULL) 
-            Q.push(current -> right);
-        Q.pop(); //remove front element
+        BinNode<T> *currentNode = q.front();
+        q.pop();
+        visit(currentNode);
+        if (currentNode->left)
+            q.push(currentNode->left);
+        if (currentNode->right)
+            q.push(currentNode->right);
     }
 }
-
 
 /*
 This is the main function for testing the implementation of the BSTree
@@ -440,12 +458,9 @@ class. This function can be freely modified.
 int main(void)
 {
     int i;
-    int arr[] = {1, 5, 2, 7, 4, 3, 5, 8, 9, 2, 10, 11, 3, 7, 9, 8, 4, 6,
-                 1, 6
-                };
+    int arr[] = {1, 5, 2, 7, 4, 3, 5, 8, 9, 2, 10, 11, 3, 7, 9, 8, 4, 6, 1, 6};
     BinNode<char> nodeArray[9];
-    BinNode<char> *Aptr, *Bptr, *Cptr, *Dptr, *Eptr, *Fptr, *Gptr, *Hptr,
-            *Iptr;
+    BinNode<char> *Aptr, *Bptr, *Cptr, *Dptr, *Eptr, *Fptr, *Gptr, *Hptr, *Iptr;
     BSTree<int> tree, *treeCopy;
 
     cout << "the tree size is: " << tree.size() << endl;
@@ -496,8 +511,7 @@ int main(void)
 
     for (i = 0; i < 5; ++i)
     {
-        cout << "removed " << treeCopy->removeAny() << " from copy..."
-             << endl;
+        cout << "removed " << treeCopy->removeAny() << " from copy..." << endl;
     }
 
     cout << "the copy tree size is: " << treeCopy->size() << endl;
@@ -562,24 +576,25 @@ int main(void)
     Iptr->right = NULL;
 
     // display preorder traversal of the tree
-    cout << "Preorder traversal: "; // 1 1 5 2 2 4 3 4 5 7 7 6 6 8 8 9 9 10 11
+    cout << "Preorder traversal: ";
     preorder(Aptr);
     cout << endl;
 
     // display inorder traversal of the tree
-    cout << "Inorder traversal: "; // 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 11
+    cout << "Inorder traversal: ";
     inorder(Aptr);
     cout << endl;
 
     // display postorder traversal of the tree
-    cout << "Postorder traversal: "; // 1 2 3 4 3 5 4 2 6 6 7 8 9 11 10 9 8 7 5 1
+    cout << "Postorder traversal: ";
     postorder(Aptr);
     cout << endl;
 
     // display levelorder traversal of the tree
-    cout << "Levelorder traversal: "; // 1 1 5 2 7 2 4 7 8 3 5 6 8 9 3 4 6 9 10 11
+    cout << "Levelorder traversal: ";
     levelorder(Aptr);
     cout << endl;
 
+    cout << "mj";   
     return 0;
 }
