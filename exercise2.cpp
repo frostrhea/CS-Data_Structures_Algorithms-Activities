@@ -54,13 +54,13 @@ template <class T> BinNode<T> *makeBinNode(T &element)
 template <class T> void preorder(BinNode<T>* root);
 
 // to be implemented
-// inorder traversal   ----------------------------------------------------------------
+// inorder traversal   
 template <class T> void inorder(BinNode<T>* root);
 
-// postorder traversal ----------------------------------------------------------------
+// postorder traversal 
 template <class T> void postorder(BinNode<T>* root);
 
-// levelorder traversal ---------------------------------------------------------------
+// levelorder traversal 
 template <class T> void levelorder(BinNode<T> *root);
 
 //
